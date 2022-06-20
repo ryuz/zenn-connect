@@ -220,9 +220,20 @@ sudo apt install -y curl
 次に Docker をインストールします。
 
 ```
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+sudo apt install docker.io
+sudo sed --in-place=~ 's/fd:\/\//unix:\/\/\/var\/run\/docker.sock/' /lib/systemd/system/docker.service
+sudo update-alternatives --set iphtables /usr/sbin/iptables-legacy
+sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+sudo systemctl restart docker
 ```
+
+なお、これだけでは動かず、uEnv.txt を書き換えて
+
+```
+linux_boot_args_systemd=systemd.unified_cgroup_hierarchy=0
+```
+
+とするとよいようでした。
 
 下記のようにすると sudo 不要で実行できます。
 
@@ -230,8 +241,16 @@ sudo sh get-docker.sh
 sudo usermod -aG docker <username>
 ```
 
+
 ```
-sudo dpkg -i linux-image-5.4.0-xlnx-v2020.2-zynqmp-fpga_5.4.0-xlnx-v2020.2-zynqmp-fpga-4_arm64.deb
-sudo dpkg -i linux-headers-5.4.0-xlnx-v2020.2-zynqmp-fpga_5.4.0-xlnx-v2020.2-zynqmp-fpga-4_arm64.deb
+docker run hello-world
 ```
 
+として動けばＯＫです。
+
+
+docker-compose も入れておきましょう。
+
+```
+sudo apt install docker-compose
+```
