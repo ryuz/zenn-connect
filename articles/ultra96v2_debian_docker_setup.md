@@ -254,3 +254,45 @@ docker-compose も入れておきましょう。
 ```
 sudo apt install docker-compose
 ```
+
+
+## Jelly の sample を Docker で動かしてみる
+
+
+```
+git clone https://github.com/ryuz/jelly.git
+cd jelly/docker/zynqmp_jelly
+./compose.sh up -d
+```
+
+これで、zynqmp_jelly イメージが実行され(初回のみ少し長いダウンロードあり)、ポート 20022 で ssh 接続を待ち受けるようになる。
+
+ssh 接続はイメージを立ち上げたのと同じアカウント名で、パスワードが fpga として接続できるようにしている。
+
+Dockerイメージ内は、ホストのユーザーID で home をボリュームとしてマウントしているので、そのまま作業できる。
+
+Docker イメージ用のパスの追加が必要だが、 home の .bashrc もそのまま読まれるので
+
+```
+if [ -f /.dockerenv ]; then
+  export PATH="/opt/opencv4/bin:$PATH"
+  export PKG_CONFIG_PATH="/opt/opencv4/lib/pkgconfig:$PKG_CONFIG_PATH"
+  export LD_LIBRARY_PATH="/opt/opencv4/lib:$LD_LIBRARY_PATH"
+
+  export PATH="/opt/opencv3/bin:$PATH"
+  export PKG_CONFIG_PATH="/opt/opencv3/lib/pkgconfig:$PKG_CONFIG_PATH"
+  export LD_LIBRARY_PATH="/opt/opencv3/lib:$LD_LIBRARY_PATH"
+
+  export PATH="/opt/grpc/bin:$PATH"
+fi
+```
+
+などを追加しておくとよいだろう。
+
+
+```
+cd jelly/projects/ultra96v2_udmabuf_sample/app/
+make run
+```
+
+
