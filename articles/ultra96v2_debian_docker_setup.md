@@ -66,8 +66,6 @@ sudo update-alternatives --config gcc
 cd /home/fpga/debian
 sudo dpkg -i linux-image-5.4.0-xlnx-v2020.2-zynqmp-fpga_5.4.0-xlnx-v2020.2-zynqmp-fpga-3_arm64.deb
 sudo dpkg -i linux-headers-5.4.0-xlnx-v2020.2-zynqmp-fpga_5.4.0-xlnx-v2020.2-zynqmp-fpga-3_arm64.deb
-sudo dpkg -i fclkcfg-5.4.0-xlnx-v2020.2-zynqmp-fpga_1.7.2-1_arm64.deb
-sudo dpkg -i u-dma-buf-5.4.0-xlnx-v2020.2-zynqmp-fpga_3.2.4-0_arm64.deb
 ```
 
 
@@ -77,8 +75,6 @@ sudo dpkg -i u-dma-buf-5.4.0-xlnx-v2020.2-zynqmp-fpga_3.2.4-0_arm64.deb
 cd /home/fpga/debian
 sudo dpkg -i linux-image-5.10.0-xlnx-v2021.1-zynqmp-fpga_5.10.0-xlnx-v2021.1-zynqmp-fpga-4_arm64.deb
 sudo dpkg -i linux-headers-5.10.0-xlnx-v2021.1-zynqmp-fpga_5.10.0-xlnx-v2021.1-zynqmp-fpga-4_arm64.deb
-sudo dpkg -i fclkcfg-5.10.0-xlnx-v2021.1-zynqmp-fpga_1.7.2-1_arm64.deb
-sudo dpkg -i u-dma-buf-5.10.0-xlnx-v2021.1-zynqmp-fpga_3.2.4-0_arm64.deb
 ```
 
 ここで一度システムをリブートしておくとよいかもしれません。
@@ -94,6 +90,27 @@ sudo reboot
 sudo apt update
 sudo apt -y upgrade
 ```
+
+## fclkcfg と u-dma-buf のインストール
+
+
+ここで[fclkcfg](https://github.com/ikwzm/fclkcfg)と[u-dma-buf](https://github.com/ikwzm/udmabuf)をインストールします。
+
+```
+git clone --recursive --depth=1 -b v1.7.2 https://github.com/ikwzm/fclkcfg-kmod-dpkg
+cd fclkcfg-kmod-dpkg
+sudo debian/rules binary
+cd ..
+sudo dpkg -i fclkcfg-5.4.0-xlnx-v2020.2-zynqmp-fpga_1.7.2-1_arm64.deb 
+
+
+git clone --recursive --depth=1 -b v3.2.3 https://github.com/ikwzm/u-dma-buf-kmod-dpkg
+cd u-dma-buf-kmod-dpkg
+sudo debian/rules binary
+cd ..
+sudo dpkg -i u-dma-buf-5.4.0-xlnx-v2020.2-zynqmp-fpga_3.2.3-0_arm64.deb
+```
+
 
 
 ## ホスト名設定
@@ -258,6 +275,8 @@ sudo apt install docker-compose
 
 ## Jelly の sample を Docker で動かしてみる
 
+拙作の ZynqMP用のDocker イメージとして、[zynqmp_jelly](https://hub.docker.com/repository/docker/ryuz88/zynqmp_jelly)というものを作成しており、OpenCV や riscv コンパイラなど、[Jelly](https://github.com/ryuz/jelly.git) のサンプルのビルドに必要なものを一式収めたイメージを用意しております。
+
 
 ```
 git clone https://github.com/ryuz/jelly.git
@@ -288,8 +307,9 @@ if [ -f /.dockerenv ]; then
 fi
 ```
 
-などを追加しておくとよいだろう。
+などを追加しておくと便利です。
 
+あとは、例えば下記のようにすれば u-dma-buf のサンプルが実行できます。
 
 ```
 cd jelly/projects/ultra96v2_udmabuf_sample/app/
