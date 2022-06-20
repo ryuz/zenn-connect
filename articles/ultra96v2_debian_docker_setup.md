@@ -284,6 +284,7 @@ if [ -f /.dockerenv ]; then
   export LD_LIBRARY_PATH="/opt/opencv3/lib:$LD_LIBRARY_PATH"
 
   export PATH="/opt/grpc/bin:$PATH"
+  export PATH="/opt/riscv/bin:$PATH"
 fi
 ```
 
