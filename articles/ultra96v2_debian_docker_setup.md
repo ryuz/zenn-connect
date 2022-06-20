@@ -1,5 +1,5 @@
 ---
-title: Ultra96V2 環境を Docker で作ってみる
+title: Ultra96V2 環境を Docker で作ってみる(書きかけ)
 emoji: 🍊
 type: tech
 topics: [FPGA, ZynqMP, Ultra96]
