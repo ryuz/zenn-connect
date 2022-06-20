@@ -12,7 +12,7 @@ published: true
 
 ## イメージの取得
 
-試しに作成してみた SD カードイメージを[こちら](https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142124&authkey=ADTriYzkOZAZdCg)に置いておきます。
+試しに作成してみた SD カードイメージを[こちら](https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142125&authkey=AKYFJh4zZWMOYBE)に置いておきます。
 
 私の OneDrive に置いているものなので、そのうち無くなるかもしれませんがひとまずの実験ということでご了承ください。
 
@@ -40,7 +40,24 @@ Ultra96V2 に差し込んで起動すると debian が起動します。
 
 ## 基本パッケージのインストール
 
-最初に アカウント fpga でログインして下記の操作を行います。
+最初に アカウント fpga でログインしてパッケージのインストールを行います。
+
+しかしながら、なぜか gcc-10 だとエラーが出るため 先に gcc-9 を入れて切り替えます。
+
+```
+sudo apt update
+sudo apt install -y gcc-9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9  9
+```
+
+下記で、切り替えメニューが出ますので gcc-9 を選びます。
+
+```
+sudo update-alternatives --config gcc
+```
+
+その後、下記のようにパッケージをインストールします。
 
 ```
 cd /home/fpga/debian
@@ -50,9 +67,8 @@ sudo dpkg -i fclkcfg-5.4.0-xlnx-v2020.2-zynqmp-fpga_1.7.2-1_arm64.deb
 sudo dpkg -i u-dma-buf-5.4.0-xlnx-v2020.2-zynqmp-fpga_3.2.4-0_arm64.deb
 ```
 
-(なぜかエラーになるので調査中です)
 
-もしカーネル 5.10.0 を使う場合は下記になります。
+もしカーネル 5.10.0 を使う場合は下記になります。こちらは gcc-10 のままでも大丈夫そうです。
 
 ```
 cd /home/fpga/debian
