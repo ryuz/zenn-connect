@@ -180,5 +180,27 @@ docker pull ryuz88/zynqmp_jelly:latest
 ./compose.sh down
 ```
 
-としてください。
+とすれば、起動時したユーザー名でポート 20022 で ssh を待ち受けるコンテナが起動します。
+
+その際、オリジナルの home をボリュームとして接続しますので .bashrc も今使っているものが読まれます。
+
+Docker コンテナ内では /.dockerenv がありますので、下記のような感じの if を追加しておくとよいでしょう。
+
+```
+if [ -f /.dockerenv ]; then
+  export PATH="/opt/opencv4/bin:$PATH"
+  export PKG_CONFIG_PATH="/opt/opencv4/lib/pkgconfig:$PKG_CONFIG_PATH"
+  export LD_LIBRARY_PATH="/opt/opencv4/lib:$LD_LIBRARY_PATH"
+
+  export PATH="/opt/opencv3/bin:$PATH"
+  export PKG_CONFIG_PATH="/opt/opencv3/lib/pkgconfig:$PKG_CONFIG_PATH"
+  export LD_LIBRARY_PATH="/opt/opencv3/lib:$LD_LIBRARY_PATH"
+
+  export PATH="/opt/grpc/bin:$PATH"
+  export PATH="/opt/riscv/bin:$PATH"
+fi
+```
+
+これで、SDカードを作り直すたびに OpenCV 等のビルドを行う状況から脱却できると嬉しいです。
+
 
