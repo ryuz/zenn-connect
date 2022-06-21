@@ -158,9 +158,15 @@ docker buildx use custum-builder
 ./buildx.sh
 ```
 
-とすれば zynqmp_jelly.tar が出来上がります。
+とすれば zynqmp_jelly.tar が出来上がりますので、ZynqMP の環境にコピーして
 
-もっとも、現在の内容はすでに[こちら](https://hub.docker.com/repository/docker/ryuz88/zynqmp_jelly)に push しておりますので、ZynqMP 側から
+```
+docker load -i zynqmp_jelly.tar
+```
+
+のようにすればOKです。
+
+もし私の環境をそのまま使いたい方は、現在の内容は[こちら](https://hub.docker.com/repository/docker/ryuz88/zynqmp_jelly)に push しておりますので、ZynqMP 側から
 
 ```
 docker pull ryuz88/zynqmp_jelly:latest
@@ -202,5 +208,7 @@ fi
 ```
 
 これで、SDカードを作り直すたびに OpenCV 等のビルドを行う状況から脱却できると嬉しいです。
+
+同じような悩みを持つ方の参考になれば幸いです。
 
 
