@@ -163,7 +163,7 @@ docker buildx use custum-builder
 もっとも、現在の内容はすでに[こちら](https://hub.docker.com/repository/docker/ryuz88/zynqmp_jelly)に push しておりますので、ZynqMP 側から
 
 ```
-docker push ryuz88/zynqmp_jelly:latest
+docker pull ryuz88/zynqmp_jelly:latest
 ```
 
 としていただければ、利用可能になるはずです。
