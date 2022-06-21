@@ -345,4 +345,4 @@ make run
 
 とすることで、カメラも試すことができるでしょう。
 
-![IMX219起動風景](../images/kv260_docker_imx219.jpg)
+![IMX219起動風景](/images/kv260_docker_imx219.jpg)
