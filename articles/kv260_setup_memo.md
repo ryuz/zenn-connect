@@ -235,8 +235,7 @@ sudo cp bootgen /usr/local/bin/
 公式のUbuntu イメージは比較的簡単にDockerを入れることができるので、今回は環境構築に活用します。
 
 ```
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+sudo apt install docker.io
 sudo apt install docker-compose
 ```
 

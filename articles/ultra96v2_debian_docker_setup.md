@@ -227,19 +227,13 @@ sudo systemctl restart autofs
 
 以前[こちら](https://ryuz.hatenablog.com/entry/2022/03/24/140650)に書いた記事を踏襲して設定を行います。
 
-まず、インストールに必要な curl を入れます。
-
-```
-sudo apt update
-sudo apt install -y curl
-```
-
 次に Docker をインストールします。
 
 ```
+sudo apt update
 sudo apt install docker.io
 sudo sed --in-place=~ 's/fd:\/\//unix:\/\/\/var\/run\/docker.sock/' /lib/systemd/system/docker.service
-sudo update-alternatives --set iphtables /usr/sbin/iptables-legacy
+sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
 sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 sudo systemctl restart docker
 ```
