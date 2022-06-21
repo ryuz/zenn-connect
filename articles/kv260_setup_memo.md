@@ -284,3 +284,65 @@ sudo pdbedit -a <username>
 ```
 sudo systemctl restart smbd nmbd
 ```
+
+
+
+## 使ってみる
+
+ここで、Docker を使って、拙作の [Jelly](https://github.com/ryuz/jelly) のサンプルを１つ動かしてみようと思います。
+
+まず、下記のようにして jelly をビルドするのに必要な環境一式の入った環境を Docker で起動します。
+
+```
+git clone https://github.com/ryuz/jelly
+cd jelly/docker/zynqmp_jelly/
+./compose.sh up -d
+```
+
+これで、Docker イメージが起動し ポート 20022 番で ssh 接続を待ち受けます。
+
+この時、起動したユーザ名、UID、GID にて内部で新しいユーザーが作られ、パスワードは fpga となります。
+さらにホストの home ディレクトリをボリュームとしてマウントしますので、Dokcer イメージの中で、ツールセットのみ利用しつつ、homeにあるユーザーデータは同じ UID、GID で引き続き操作できるようにしています。
+
+.bashrc も home のものが読まれますので
+
+```
+if [ -f /.dockerenv ]; then
+    export PATH="/opt/opencv4/bin:$PATH"
+    export PKG_CONFIG_PATH="/opt/opencv4/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export LD_LIBRARY_PATH="/opt/opencv4/lib:$LD_LIBRARY_PATH"
+
+    export PATH="/opt/opencv3/bin:$PATH"
+    export PKG_CONFIG_PATH="/opt/opencv3/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export LD_LIBRARY_PATH="/opt/opencv3/lib:$LD_LIBRARY_PATH"
+
+    export PATH="/opt/grpc/bin:$PATH"
+    export PKG_CONFIG_PATH="/opt/grpc/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+    export PATH="/opt/riscv/bin:$PATH"
+fi
+```
+
+のような行を追加するとよいでしょう。
+
+ポート 20022 への ssh の接続は [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview) などで繋ぐこともできます。
+
+接続出来たら
+
+```
+cd jelly/projects/kv260_udmabuf_sample/app/
+make run
+```
+
+とすれば、udmabuf のサンプルが動きます。
+
+もし Raspberry Pi Camera Module V2 (Sony IMX219) をお持ちであり、ssh での X-Window のポートフォワードが有効であれば
+
+```
+cd jelly/projects/kv260_imx219/app/
+make run
+```
+
+とすることで、カメラも試すことができるでしょう。
+
+![IMX219起動風景](../images/kv260_docker_imx219.jpg)
