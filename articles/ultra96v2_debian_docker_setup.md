@@ -1,8 +1,8 @@
 ---
-title: Ultra96V2 環境を Docker で作ってみる
+title: Docker を使える Ultra96V2 用 Debian 環境構築
 emoji: 🍊
 type: tech
-topics: [FPGA, ZynqMP, Ultra96]
+topics: [FPGA, ZynqMP, Ultra96, Debian]
 published: true
 ---
 
@@ -14,7 +14,7 @@ published: true
 
 ## イメージの取得
 
-試しに作成してみた SD カードイメージを[こちら](https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142125&authkey=AKYFJh4zZWMOYBE)に置いておきます。
+試しに作成してみた SD カードイメージを[こちら](https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142127&authkey=AF2eo7gjuQptjSs)に置いておきます。
 
 私の OneDrive に置いているものなので、そのうち無くなるかもしれませんがひとまずの実験ということでご了承ください。
 
@@ -66,15 +66,19 @@ sudo update-alternatives --config gcc
 cd /home/fpga/debian
 sudo dpkg -i linux-image-5.4.0-xlnx-v2020.2-zynqmp-fpga_5.4.0-xlnx-v2020.2-zynqmp-fpga-3_arm64.deb
 sudo dpkg -i linux-headers-5.4.0-xlnx-v2020.2-zynqmp-fpga_5.4.0-xlnx-v2020.2-zynqmp-fpga-3_arm64.deb
+sudo dpkg -i u-dma-buf-5.4.0-xlnx-v2020.2-zynqmp-fpga_3.2.4-0_arm64.deb
+sudo dpkg -i fclkcfg-5.4.0-xlnx-v2020.2-zynqmp-fpga_1.7.2-1_arm64.deb
 ```
 
 
-もしカーネル 5.10.0 を使う場合は下記になります。こちらは gcc-10 のままでも大丈夫そうです。
+もしカーネル 5.10.0 を使う場合は下記になります。
 
 ```
 cd /home/fpga/debian
 sudo dpkg -i linux-image-5.10.0-xlnx-v2021.1-zynqmp-fpga_5.10.0-xlnx-v2021.1-zynqmp-fpga-4_arm64.deb
 sudo dpkg -i linux-headers-5.10.0-xlnx-v2021.1-zynqmp-fpga_5.10.0-xlnx-v2021.1-zynqmp-fpga-4_arm64.deb
+sudo dpkg -i u-dma-buf-5.10.0-xlnx-v2021.1-zynqmp-fpga_3.2.4-0_arm64.deb
+sudo dpkg -i fclkcfg-5.10.0-xlnx-v2021.1-zynqmp-fpga_1.7.2-1_arm64.deb
 ```
 
 ここで一度システムをリブートしておくとよいかもしれません。
@@ -91,29 +95,8 @@ sudo apt update
 sudo apt -y upgrade
 ```
 
-## fclkcfg と u-dma-buf のインストール
 
-
-ここで[fclkcfg](https://github.com/ikwzm/fclkcfg)と[u-dma-buf](https://github.com/ikwzm/udmabuf)をインストールします。
-
-```
-git clone --recursive --depth=1 -b v1.7.2 https://github.com/ikwzm/fclkcfg-kmod-dpkg
-cd fclkcfg-kmod-dpkg
-sudo debian/rules binary
-cd ..
-sudo dpkg -i fclkcfg-5.4.0-xlnx-v2020.2-zynqmp-fpga_1.7.2-1_arm64.deb 
-
-
-git clone --recursive --depth=1 -b v3.2.3 https://github.com/ikwzm/u-dma-buf-kmod-dpkg
-cd u-dma-buf-kmod-dpkg
-sudo debian/rules binary
-cd ..
-sudo dpkg -i u-dma-buf-5.4.0-xlnx-v2020.2-zynqmp-fpga_3.2.3-0_arm64.deb
-```
-
-
-
-## ホスト名設定
+## ホスト名設定(お好みで)
 
 他にも Zybo など複数のボードを持っている人は hostname が同じだと紛らわしいので名前変更しています。
 
@@ -134,7 +117,7 @@ sudo sh -c 'echo 127.0.1.1 $(hostname) >> /etc/hosts'
 としております。
 
 
-## ユーザー作成
+## ユーザー作成(お好みで)
 
 fpga というユーザー名のままでもいいのですが、github を使う場合などもあるので自分の名前でユーザーを作ることも可能です。
 
@@ -149,7 +132,7 @@ sudo gpasswd -a <username> sudo
 ```
 
 
-## Samba設定
+## Samba設定(お好みで)
 
 Windowsからの利用が楽なように Samba の設定をします。
 
@@ -231,39 +214,32 @@ sudo systemctl restart autofs
 
 ```
 sudo apt update
-sudo apt install docker.io
-sudo sed --in-place=~ 's/fd:\/\//unix:\/\/\/var\/run\/docker.sock/' /lib/systemd/system/docker.service
+sudo apt install -y docker.io
+sudo apt install -y docker-compose
 sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
 sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 sudo systemctl restart docker
 ```
 
-なお、これだけでは動かず、uEnv.txt を書き換えて
-
-```
-linux_boot_args_systemd=systemd.unified_cgroup_hierarchy=0
-```
-
-とするとよいようでした。
-
-下記のようにすると sudo 不要で実行できます。
+下記のようにすると次回ログインから sudo 不要で実行できます。
 
 ```
 sudo usermod -aG docker <username>
 ```
 
+試しに
 
 ```
-docker run hello-world
+sudo docker run hello-world
 ```
 
 として動けばＯＫです。
 
 
-docker-compose も入れておきましょう。
+なお、Docker を動かす為に、オリジナルの uEnv.txt を下記のように修正しております。
 
 ```
-sudo apt install docker-compose
+linux_boot_args_systemd=systemd.unified_cgroup_hierarchy=0
 ```
 
 
@@ -303,7 +279,8 @@ fi
 
 などを追加しておくと便利です。
 
-あとは、例えば下記のようにすれば u-dma-buf のサンプルが実行できます。
+事前にREADMEに従って別PCで bit ファイルを合成してコピーしておく必要がありますが、例えば下記のようにすれば u-dma-buf のサンプルが実行できます。
+
 
 ```
 cd jelly/projects/ultra96v2_udmabuf_sample/app/
