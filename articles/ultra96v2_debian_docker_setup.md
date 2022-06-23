@@ -14,7 +14,7 @@ published: true
 
 ## イメージの取得
 
-試しに作成してみた SD カードイメージを下記においておきます。
+試しに作成してみた SD カードイメージを[OneDrive](https://1drv.ms/u/s!AvbGlpww6kPmgskP823ghcN3ol079A?e=lNhei9)においておきます。
 
 -  [ZynqMP-FPGA-Linux-v2021.1.1-Ultra96V2-Docker-20220622.zip](https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142127&authkey=AF2eo7gjuQptjSs)
 
