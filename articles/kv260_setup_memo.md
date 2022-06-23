@@ -327,7 +327,7 @@ fi
 
 ポート 20022 への ssh の接続は [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview) などで繋ぐこともできます。
 
-接続出来たら
+事前に各サンプルの READMEに従って別PCで bit ファイルを合成してコピーしておく必要がありますが、それができていれば、ssh接続して
 
 ```
 cd jelly/projects/kv260_udmabuf_sample/app/
