@@ -27,6 +27,12 @@ wget -O ZynqMP-FPGA-Linux-v2021.1.1-Ultra96V2-Docker-20220622.zip "https://onedr
 
 私の OneDrive に置いているものなので、そのうち無くなるかもしれませんがひとまずの実験ということでご了承ください。
 
+以前、書いた
+
+- [Ultra96V2のDebianでDocker動かしてみた](https://ryuz.hatenablog.com/entry/2022/03/24/140650)
+- [ZynqMP用SDカードの自動パーティーション拡張に挑戦してみる](https://zenn.dev/ryuz88/articles/sdcard_zynqmp_resize2fs_once)
+
+などの記事の内容を含んだイメージファイルになっております。
 Dokcer 起動のためのカーネルコンフィギュレーション修正と、RPU(Cortex-R5)認識の為の修正のみ行っており、初回起動時に自動的にSDカードのサイズに合わせたパーティーション拡張を行うようにしております。
 
 現在  v2021.1.1 を元に作成を行っており、このパッケージには 
