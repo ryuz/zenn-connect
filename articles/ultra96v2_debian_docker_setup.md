@@ -22,8 +22,7 @@ published: true
 コマンドラインからの取得は下記で行けるはずです。
 
 ```
-wget -O ZynqMP-FPGA-Linux-v2021.1.1-Ultra96V2-Docker-20220622.zip "https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142127&authkey=AF2e
-o7gjuQptjSs"
+wget -O ZynqMP-FPGA-Linux-v2021.1.1-Ultra96V2-Docker-20220622.zip "https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142127&authkey=AF2eo7gjuQptjSs"
 ```
 
 私の OneDrive に置いているものなので、そのうち無くなるかもしれませんがひとまずの実験ということでご了承ください。
