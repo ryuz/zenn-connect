@@ -294,7 +294,7 @@ fi
 
 などを追加しておくと便利です。
 
-事前にREADMEに従って別PCで bit ファイルを合成してコピーしておく必要がありますが、例えば下記のようにすれば u-dma-buf のサンプルが実行できます。
+事前に[README](https://github.com/ryuz/jelly/blob/master/projects/ultra96v2_udmabuf_sample/README.md)に従って別PCで bit ファイルを合成してコピーしておく必要がありますが、例えば下記のようにすれば u-dma-buf のサンプルが実行できます。
 
 
 ```
