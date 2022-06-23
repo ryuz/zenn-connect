@@ -19,6 +19,13 @@ published: true
 -  [ZynqMP-FPGA-Linux-v2021.1.1-Ultra96V2-Docker-20220622.zip](https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142127&authkey=AF2eo7gjuQptjSs)
 
 
+コマンドラインからの取得は下記で行けるはずです。
+
+```
+wget -O ZynqMP-FPGA-Linux-v2021.1.1-Ultra96V2-Docker-20220622.zip "https://onedrive.live.com/download?cid=E643EA309C96C6F6&resid=E643EA309C96C6F6%2142127&authkey=AF2e
+o7gjuQptjSs"
+```
+
 私の OneDrive に置いているものなので、そのうち無くなるかもしれませんがひとまずの実験ということでご了承ください。
 
 Dokcer 起動のためのカーネルコンフィギュレーション修正と、RPU(Cortex-R5)認識の為の修正のみ行っており、初回起動時に自動的にSDカードのサイズに合わせたパーティーション拡張を行うようにしております。
